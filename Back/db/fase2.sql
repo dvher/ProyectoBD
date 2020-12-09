@@ -461,7 +461,7 @@ AS $$
       
     BEGIN
        
-       SELECT COUNT(*) INTO cantidad FROM Casa WHERE Direccion LIKE CONCAT(calle, '%');
+       SELECT COUNT(ID_Casa) INTO cantidad FROM Casa WHERE Direccion LIKE CONCAT(calle, '%');
        RETURN cantidad;
     END;
 
