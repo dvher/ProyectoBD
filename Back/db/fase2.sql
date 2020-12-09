@@ -170,6 +170,204 @@ WHERE ID_Casa = 1;
 
 
 
+--Creación Base
+
+CREATE DATABASE Noxus;
+
+--Creación Tablas
+
+CREATE TABLE Empresa(
+
+	ID_Empresa serial PRIMARY KEY,
+	Nombre_Empresa VARCHAR (50) NOT NULL,
+	Rut_Empresa VARCHAR(10) NOT NULL
+
+);
+
+CREATE TABLE Persona(
+
+	ID_Persona serial PRIMARY KEY,
+	Nombre VARCHAR(50) NOT NULL,
+	Apellido VARCHAR(50) NOT NULL,
+	Rut VARCHAR(30) NOT NULL,
+	Tiene_Deuda BOOLEAN NOT NULL,
+	Deuda INT NOT NULL,
+	Sexo VARCHAR(10) NOT NULL,
+	Arrendatario BOOLEAN NOT NULL
+
+);	
+
+CREATE TABLE Arquitecto (
+
+	Correo_Empresa VARCHAR ( 50 ) PRIMARY KEY,
+	ID_Persona INT NOT NULL,
+	ID_Empresa INT NOT NULL,
+Obras_disenadas INT NOT NULL,
+Ano_egreso INT NOT NULL,
+FOREIGN KEY (ID_Persona)
+REFERENCES Persona (ID_Persona),
+FOREIGN KEY (ID_Empresa )
+REFERENCES Empresa(ID_Empresa )
+);
+
+CREATE TABLE Ingeniero (
+	Correo_Empresa VARCHAR (50) PRIMARY KEY,
+	ID_Persona INT NOT NULL,
+	Obras_Supervisadas INT NOT NULL,
+	Ano_egreso INT NOT NULL,
+	ID_Empresa INT NOT NULL,
+	FOREIGN KEY (ID_Persona)
+		REFERENCES Persona (ID_Persona),
+	FOREIGN KEY (ID_Empresa)
+		REFERENCES Empresa (ID_Empresa)
+);
+
+CREATE TABLE Constructor (
+
+	Correo_Empresa VARCHAR(50) PRIMARY KEY,
+	ID_Persona INT NOT NULL,
+	ID_Empresa INT NOT NULL,
+	Obras_construidas INT NOT NULL,
+	FOREIGN KEY (ID_Persona)
+		REFERENCES Persona (ID_Persona),
+	FOREIGN KEY (ID_Empresa)
+		REFERENCES Empresa (ID_Empresa)
+
+);
+
+CREATE TABLE Casa (
+
+	ID_Casa serial PRIMARY KEY,
+	ID_Empresa INT NOT NULL,
+	ID_Persona INT NOT NULL,
+	Precio_Arriendo INT NOT NULL,
+	Direccion VARCHAR ( 50 ) NOT NULL,
+	Tamano INT NOT NULL,
+	Segundo_Piso BOOLEAN NOT NULL,
+	Numero_de_piezas INT NOT NULL,
+	Precio_Compra INT NOT NULL,
+	FOREIGN KEY (ID_Empresa)
+		REFERENCES Empresa (ID_Empresa),
+	FOREIGN KEY (ID_Persona)
+		REFERENCES Persona (ID_Persona)
+
+);
+
+CREATE TABLE CasaPersona (
+
+  ID_CasaPersona serial PRIMARY KEY,
+  ID_Persona INT NOT NULL,
+  ID_Casa INT NOT NULL,
+  FOREIGN KEY (ID_Casa)
+		REFERENCES Casa (ID_Casa),
+  FOREIGN KEY (ID_Persona)
+    REFERENCES Persona (ID_Persona)  
+    
+);
+
+--Inserción en tabla Empresa
+
+INSERT INTO Empresa (ID_Empresa , Nombre_Empresa , Rut_Empresa)
+VALUES(12345, 'Soquimich', '12345678-3');
+
+INSERT INTO Empresa (ID_Empresa , Nombre_Empresa , Rut_Empresa)
+VALUES(12346, 'Penta', '12345689-3');
+
+--Inserción en tabla Persona
+
+INSERT INTO Persona ( ID_Persona, Nombre , Apellido , Rut ,Tiene_Deuda , Deuda , Sexo , Arrendatario )
+VALUES(22234, 'Martin' , 'NoGutierrez' , '18234687-5' , True , 200 , 'Hombre' , False );
+
+--Inserción en tabla Arquitecto
+
+INSERT INTO Persona (ID_Persona, Nombre, Apellido, Rut, Tiene_Deuda, Deuda, Sexo, Arrendatario)
+VALUES (72364, 'Ricardo', 'Milos', '16852534-9', False, 0, 'Hombre', True);
+
+INSERT INTO Arquitecto (Correo_Empresa, ID_Persona,  ID_Empresa, Obras_disenadas, Ano_egreso)
+VALUES('bob2@soquimich.cl', 72364, 12345, 12, 2012);
+
+--Inserción en tabla Ingeniero
+
+INSERT INTO Persona (ID_Persona, Nombre, Apellido, Rut, Tiene_Deuda, Deuda, Sexo, Arrendatario)
+VALUES ( 646456, 'Camila', 'Flores', '26551832-8', True, 5000, 'Mujer', True);
+
+INSERT INTO Ingeniero (Correo_Empresa, ID_Persona, Obras_supervisadas, Ano_egreso, ID_Empresa)
+VALUES ('ing1@soquimich.cl', 646456, 5, 2020, 12345);
+
+  --Inserción 2
+
+INSERT INTO Persona (ID_Persona, Nombre, Apellido, Rut, Tiene_Deuda, Deuda, Sexo, Arrendatario)
+VALUES ( 646457, 'Camilo', 'Rosas', '26523832-8', False, 0, 'Hombre', False);
+
+INSERT INTO Ingeniero (Correo_Empresa, ID_Persona, Obras_supervisadas, Ano_egreso, ID_Empresa)
+VALUES ('ing@penta.cl', 646457, 50, 1900, 12345);
+
+--Inserción en tabla Constructor
+
+INSERT INTO Persona (ID_Persona, Nombre, Apellido, Rut, Tiene_Deuda, Deuda, Sexo, Arrendatario)
+VALUES (26351, 'Chayanne', 'Figueroa', '20496822-9', True, 10, 'Hombre', True);
+
+INSERT INTO Constructor (Correo_Empresa, ID_Persona,  ID_Empresa, Obras_construidas)
+VALUES('chayanne@soquimich.cl', 26351, 12345, 7);
+
+--Inserción en tabla Casa
+
+INSERT INTO Casa ( ID_Casa , ID_Empresa , ID_Persona , Precio_Arriendo , Direccion , Tamano ,  Segundo_Piso , Numero_de_piezas , Precio_Compra )
+VALUES ( 23566, 12345 , 22234 , 500 , 'Punta Arenas 222' , 234 , False , 2 ,4500 );
+
+INSERT INTO Casa ( ID_Casa , ID_Empresa , ID_Persona , Precio_Arriendo , Direccion , Tamano ,  Segundo_Piso , Numero_de_piezas , Precio_Compra )
+VALUES ( 243, 12345 , 26351 , 500 , 'Punta Arenas 231' , 200 , True , 7 , 50000 );
+
+INSERT INTO Casa ( ID_Casa , ID_Empresa , ID_Persona , Precio_Arriendo , Direccion , Tamano ,  Segundo_Piso , Numero_de_piezas , Precio_Compra )
+VALUES ( 432, 12346 , 26351 , 500 , 'Caldera 333' , 200 , True , 7 , 50000 );
+
+INSERT INTO Casa ( ID_Casa , ID_Empresa , ID_Persona , Precio_Arriendo , Direccion , Tamano ,  Segundo_Piso , Numero_de_piezas , Precio_Compra )
+VALUES ( 3123, 12346 , 646457 , 5040 , 'Providencia 2' , 205 , True , 7 , 56444 );
+
+
+
+
+
+--Inserción en CasaPersona
+
+INSERT INTO CasaPersona(ID_CasaPersona, ID_Persona, ID_Casa) VALUES (65465, 26351, 23566);
+
+
+--Ejemplos ALTER
+
+ALTER TABLE Casa
+ADD Inquilinos;
+
+ALTER TABLE Casa
+ALTER COLUMN Inquilinos TYPE VARCHAR(20);
+
+ALTER TABLE Casa
+RENAME COLUMN Inquilinos
+TO Habitantes;
+
+ALTER TABLE Casa
+DROP COLUMN Habitantes;
+
+--Ejemplos UPDATE
+
+UPDATE CASA 
+SET Precio_Compra = 7000
+WHERE Numero_de_piezas = 2;
+
+UPDATE CASA 
+SET Precio_Arriendo = 1000
+WHERE Direccion= 'Punta Arenas 222';
+
+--Ejemplos DELETE
+
+INSERT INTO Casa ( ID_Casa , ID_Empresa , ID_Persona , Precio_Arriendo , Direccion , Tamano ,  Segundo_Piso , Numero_de_piezas , Precio_Compra )
+VALUES ( 1, 12345 , 22234 , 500 , 'Pio Nono 430' , 234 , True, 3 ,7000 );
+
+DELETE FROM CASA
+WHERE ID_Casa = 1;
+
+
+
 CREATE OR REPLACE FUNCTION ConsultaUno(id INT) RETURNS INT
 LANGUAGE plpgsql
 AS $$
@@ -179,7 +377,7 @@ AS $$
 
     BEGIN
 
-      SELECT SUM(deuda) INTO suma FROM Persona WHERE ID_Casa = id;
+      SELECT SUM(p.Deuda) INTO suma FROM CasaPersona AS c, Persona AS p WHERE ID_Casa = id AND c.ID_Persona = p.ID_Persona;
 
       RETURN suma;
         
@@ -207,14 +405,11 @@ $$;
 CREATE OR REPLACE FUNCTION ConsultaTres(fecha INT) returns table( Nombre_Ingeniero VARCHAR(50), Apellido_Ingeniero VARCHAR(50) )
 LANGUAGE plpgsql
 AS $$
-    DECLARE 
-
-	    fecha INT;
 
     BEGIN
 
       RETURN QUERY SELECT p.Nombre, p.Apellido FROM Ingeniero AS i , Persona AS p 
-        WHERE i.ID_Persona = p.ID_Persona AND i.Ano_egreso - fecha < 5;
+        WHERE i.ID_Persona = p.ID_Persona AND fecha - i.Ano_egreso > 5;
         
     END;
 
@@ -283,11 +478,11 @@ AS $$
 
    SELECT COUNT(tmp.r) into n
         FROM (
-            SELECT c.Segundo_Piso as r, c.Precio_Compra as q, c.Numero_de_piezas as l 
+            SELECT c.ID_Casa as r, c.Segundo_Piso, c.Precio_Compra, c.Numero_de_piezas  
             FROM Casa as c
-            WHERE r = TRUE  
-            AND q < 70000000
-            AND l = 7  
+            WHERE  c.Segundo_Piso = TRUE  
+            AND c.Precio_Compra < 70000000
+            AND c.Numero_de_piezas = 7  
             GROUP BY c.ID_Casa
         ) as tmp;
         
@@ -298,7 +493,7 @@ AS $$
 
 $$;
 
-CREATE OR REPLACE FUNCTION ConsultaOcho(id INT) RETURNS table(Direccion VARCHAR(50))
+CREATE OR REPLACE FUNCTION ConsultaOcho(id INT) RETURNS table(ID_Casa INT,	Direccion VARCHAR(50))
 LANGUAGE plpgsql
 AS $$
     BEGIN
@@ -309,7 +504,7 @@ AS $$
 
 $$;
 
-CREATE OR REPLACE FUNCTION ConsultaNueve() RETURNS INT
+CREATE OR REPLACE FUNCTION ConsultaNueve() RETURNS TABLE(ID_Persona INT, Nombre VARCHAR(50), Apellido VARCHAR(50), Rut VARCHAR(30))
 LANGUAGE plpgsql
 AS $$
     DECLARE 
@@ -317,14 +512,10 @@ AS $$
 	    n INT;
 
     BEGIN
-    SELECT COUNT( ID_Persona) maximo INTO n
-    FROM Casa AS c
-    GROUP BY c.ID_Persona
-    ORDER BY maximo DESC LIMIT 1;
-   
-        
-        RETURN n;
 
+      SELECT foo.ID_Persona INTO n FROM (SELECT COUNT(*), c.ID_Persona FROM Casa AS c GROUP BY c.ID_Persona ORDER BY Count DESC LIMIT 1) AS foo;
+
+      RETURN QUERY SELECT p.ID_Persona, p.Nombre, p.Apellido, p.Rut FROM Persona AS p WHERE p.ID_Persona = n;
 
     END;
 
